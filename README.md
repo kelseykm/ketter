@@ -12,3 +12,4 @@
 ```
 ketter.py <url-file>
 ```
+* **NB:** If the file to be downloaded is already present on the current directory (eg. if it had already been downloaded earlier; fully or partially), ketter will assume it is a partial download and will attempt to resume downloading. If the file was already fully downloaded, the download will fail.
