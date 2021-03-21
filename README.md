@@ -2,6 +2,8 @@
 
 * Ketter is an asynchronous HTTP downloader written in Python.
 
+* **See _Ketter Links_ here: https://github.com/kelseykm/ketter_links**
+
 ### Depends
 * asyncio
 * aiohttp
