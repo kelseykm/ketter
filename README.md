@@ -1,3 +1,4 @@
+![alt text](./ketter.png)
 # **Ketter**
 
 * Ketter is an asynchronous HTTP downloader written in Python.
