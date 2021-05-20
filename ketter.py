@@ -26,7 +26,7 @@ banner = f"""{orange}
 |_|\_\___|\__|\__\___|_|    /_/
 {normal}"""
 
-class Ketter(object):
+class Ketter:
     def __init__(self, session, url, outfile, resume):
         self.session = session
         self.url = url
