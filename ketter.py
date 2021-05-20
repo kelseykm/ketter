@@ -11,7 +11,7 @@ import os
 import sys
 import tqdm
 
-version = 0.3
+version = 0.4
 normal = '\033[0;39m'
 white = '\033[1;39m'
 green = '\033[1;32m'
