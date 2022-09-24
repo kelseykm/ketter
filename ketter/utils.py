@@ -1,4 +1,4 @@
-"""utils contains convenient helper functions"""
+"""utils contains convenient helper functions and variables"""
 
 from .colour import (
     BLUE_BACKGROUND,
