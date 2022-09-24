@@ -1,11 +1,11 @@
-import aiohttp
+from aiohttp import ClientSession
 from typing import Union
 
 
 async def download(
         url: str,
         headers: dict[str, str],
-        session: aiohttp.ClientSession,
+        session: ClientSession,
         chunk_size: int,
 ) -> Union[dict[str, Union[str, int]], bytes]:
     """
