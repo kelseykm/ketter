@@ -27,13 +27,3 @@ BLUE_BACKGROUND = f"{_ESC}[44m"
 MAGENTA_BACKGROUND = f"{_ESC}[45m"
 CYAN_BACKGROUND = f"{_ESC}[46m"
 WHITE_BACKGROUND = f"{_ESC}[47m"
-
-
-def info_banner() -> str:
-    """info_banner returns a formatted info banner"""
-    return f"{BLUE_BACKGROUND}{BOLD}INFO{NORMAL}"
-
-
-def error_banner() -> str:
-    """error_banner returns a formatted error banner"""
-    return f"{RED_BACKGROUND}{BOLD}ERROR{NORMAL}"
