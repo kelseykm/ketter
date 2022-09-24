@@ -11,12 +11,12 @@ from .colour import (
 
 def info_banner() -> str:
     """info_banner returns a formatted info banner"""
-    return f"{BLUE_BACKGROUND}{BOLD}INFO{NORMAL}"
+    return f"{BLUE_BACKGROUND}{BOLD}[INFO]{NORMAL}"
 
 
 def error_banner() -> str:
     """error_banner returns a formatted error banner"""
-    return f"{RED_BACKGROUND}{BOLD}ERROR{NORMAL}"
+    return f"{RED_BACKGROUND}{BOLD}[ERROR]{NORMAL}"
 
 
 def print_ketter_banner():
