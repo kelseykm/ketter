@@ -1,3 +1,5 @@
+"""colour provides ANSI colour codes"""
+
 _ESC = chr(27)
 
 NORMAL = f"{_ESC}[0m"
