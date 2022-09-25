@@ -105,9 +105,17 @@ def create_parser() -> argparse.ArgumentParser:
         description="Asynchronous HTTP downloader", prog="ketter")
     parser.add_argument("-v", "--version", action="version",
                         version=f"%(prog)s {VERSION}")
+    parser.add_argument("--header", action="append",
+                        metavar="key=value", help="""custom header to include in
+                        all requests. Should be of the form key=value. More
+                        than one may be specified. May also be used to
+                        overwrite automatically generated headers such as the
+                        user-agent. If you would like to remove header
+                        completely from requests, pass in the header key
+                        without the value, i.e. key=""")
     parser.add_argument(
         "URL_FILE",  help="""text file with urls to be downloaded, separated by
-        newlines; the urls should be written in full, including the url
+        newlines. The urls should be written in full, including the url
         scheme""")
 
     return parser
