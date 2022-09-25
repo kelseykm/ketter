@@ -78,7 +78,7 @@ async def worker(idx: int, url: str, session: aiohttp.ClientSession):
 
     metadata = await download_generator.asend(None)
 
-    if metadata["status"] < 400:
+    if metadata["status"] >= 400:
         raise KetterHTTPError(
             f"Response status {metadata['status']}, {HTTP_CODES[metadata['status']]}")
 
