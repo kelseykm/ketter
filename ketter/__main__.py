@@ -104,7 +104,7 @@ def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Asynchronous HTTP downloader", prog="ketter")
     parser.add_argument("-v", "--version", action="version",
-                        version=f"%(prog)s {VERSION}")
+                        version=f"{info_banner()} %(prog)s {VERSION}")
     parser.add_argument("--header", action="append",
                         metavar="key=value", help="""custom header to include in
                         all requests. Should be of the form key=value. More
