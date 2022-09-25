@@ -19,8 +19,8 @@ async def download(
         chunk_size: int,
 ) -> typing.Union[dict[str, typing.Union[str, int]], bytes]:
     """
-    download is an async generator func that performs http get request for
-    given url and returns metadata and chunked data
+    performs http get request for given url and returns metadata and chunked
+    data
     """
 
     async with session.get(url=url, headers=headers) as response:
@@ -102,6 +102,8 @@ async def worker(idx: int, url: str, session: aiohttp.ClientSession):
 
 
 def create_parser() -> argparse.ArgumentParser:
+    """creates and returns a commandline arguments parser"""
+
     parser = argparse.ArgumentParser(
         description="Asynchronous HTTP downloader", prog="ketter")
     parser.add_argument("-v", "--version", action="version",
@@ -119,6 +121,8 @@ def create_parser() -> argparse.ArgumentParser:
 
 
 def validate_url_file(url_file: str):
+    """ensures the url file exists and is a regular file"""
+
     if not os.path.exists(url_file):
         raise KetterInvalidFileError(
             f"Url file does not exist: {format_user_submitted(url_file)}")
@@ -129,11 +133,15 @@ def validate_url_file(url_file: str):
 
 
 def harvest_urls(url_file: str) -> list[str]:
+    """reads and formats urls from url file"""
+
     with open(url_file) as file:
         return [url.strip() for url in file.readlines()]
 
 
 def harvest_headers(custom_headers: list[str]) -> dict[str, str]:
+    """validates and formats passed headers for ready use"""
+
     def reduce_headers(
             accum_headers: dict[str, str],
             curr_header: str
@@ -156,6 +164,8 @@ def harvest_headers(custom_headers: list[str]) -> dict[str, str]:
 
 
 async def main():
+    """sets up everything"""
+
     parser = create_parser()
     args = parser.parse_args()
 
