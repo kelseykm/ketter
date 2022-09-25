@@ -41,6 +41,8 @@ async def download(
 
 
 def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.std.tqdm:
+    """returns tqdm progress bar ready for use"""
+
     desc = f"{info_banner()} downloading: {UNDERLINE} {file_name} {NORMAL}"
     bar_format = "{desc} {bar} {percentage:6.2f}%"
 
@@ -52,6 +54,8 @@ def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.std.tqdm:
 
 
 async def worker(idx: int, url: str, session: aiohttp.ClientSession):
+    """handles downloading, writing to disc and updating progress bar"""
+
     parsed_url = urllib.parse.urlparse(url)
     file_name = parsed_url.path.split("/")[-1]
     file_name = urllib.parse.unquote(file_name)
