@@ -7,7 +7,7 @@ from .downloader import worker
 
 
 async def main() -> int:
-    """sets up everything"""
+    """executes the program"""
 
     retval = 0
 
