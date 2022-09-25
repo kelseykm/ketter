@@ -99,7 +99,9 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument("-v", "--version", action="version",
                         version=f"%(prog)s {VERSION}")
     parser.add_argument(
-        "URL_FILE",  help="text file with urls to be downloaded, separated by newlines")
+        "URL_FILE",  help="""text file with urls to be downloaded, separated by
+        newlines; the urls should be written in full, including the url
+        scheme""")
 
     return parser
 
