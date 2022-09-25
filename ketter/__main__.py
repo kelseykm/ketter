@@ -146,7 +146,7 @@ async def main():
         results = await asyncio.gather(*workers, return_exceptions=True)
 
         for idx, result in enumerate(results):
-            if result is not None:
+            if isinstance(result, Exception):
                 print(
                     f"{error_banner()} {format_user_submitted(urls[idx])}: {repr(result)}")
 
