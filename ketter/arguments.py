@@ -7,7 +7,7 @@ import functools
 import os
 from .utils import *
 from .errors import *
-from . import __version__ as VERSION, USER_AGENT
+from . import __version__ as VERSION
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -85,7 +85,7 @@ def main() -> tuple[dict[str, str], list[str]]:
     except Exception as e:
         parser.exit(2, f"{error_banner()} {e}")
 
-    headers = {"user-agent": USER_AGENT}
+    headers = {"user-agent": f"ketter/{VERSION}"}
     headers.update(custom_headers)
 
     def reduce_headers_capitalise(
