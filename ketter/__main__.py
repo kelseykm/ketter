@@ -54,6 +54,8 @@ def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.std.tqdm:
 async def worker(idx: int, url: str, session: aiohttp.ClientSession):
     """handles downloading, writing to disc and updating progress bar"""
 
+    _CHUNK_SIZE = 60*1024
+
     parsed_url = urllib.parse.urlparse(url)
     file_name = parsed_url.path.split("/")[-1]
     file_name = urllib.parse.unquote(file_name)
@@ -71,7 +73,7 @@ async def worker(idx: int, url: str, session: aiohttp.ClientSession):
         url=url,
         headers=headers,
         session=session,
-        chunk_size=chunk_size
+        chunk_size=_CHUNK_SIZE
     )
 
     metadata = await download_generator.asend(None)
