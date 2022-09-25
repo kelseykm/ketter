@@ -139,7 +139,7 @@ async def main():
         workers = []
 
         for idx, url in enumerate(urls):
-            workers.append(worker(idx, url))
+            workers.append(worker(idx, url, session))
 
         results = await asyncio.gather(*workers, return_exceptions=True)
 
