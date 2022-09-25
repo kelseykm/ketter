@@ -135,7 +135,7 @@ def harvest_urls(url_file: str) -> list[str]:
 
 def harvest_headers(custom_headers: list[str]) -> dict[str, str]:
     def reduce_headers(accum_headers, curr_header):
-        key, value = curr_header.split("=")
+        key, value = curr_header.split("=", maxsplit=1)
         key = key.lower()
 
         if value == "":
