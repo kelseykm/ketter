@@ -41,8 +41,8 @@ async def download(
 def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.std.tqdm:
     """returns tqdm progress bar ready for use"""
 
-    desc = f"{info_banner()} downloading: {UNDERLINE} {file_name} {NORMAL}"
-    bar_format = "{desc} {bar} {percentage:6.2f}%"
+    desc = f"{info_banner()} Downloading: {format_user_submitted(file_name)}"
+    bar_format = "{desc} \033[1;33m{bar}\033[0m \033[1m{percentage:06.2f}%\033[0m"
 
     return tqdm.tqdm(
         desc=desc,
