@@ -67,7 +67,7 @@ async def worker(idx: int, url: str, session: aiohttp.ClientSession):
     resume_download = True if os.path.exists(file_name) else False
     if resume_download:
         file_size = os.stat(file_name).st_size
-        headers["Range"] = f"bytes={file_name}-"
+        headers["Range"] = f"bytes={file_size}-"
 
     download_generator = download(
         url=url,
