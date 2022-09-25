@@ -6,7 +6,11 @@ import tqdm
 import typing
 import urllib.parse
 from .colour import UNDERLINE, ITALIC, NORMAL, RED
-from .utils import info_banner, error_banner, print_ketter_banner
+from .utils import (
+    info_banner, error_banner,
+    print_ketter_banner, HTTP_CODES,
+)
+from .errors import KetterHTTPError
 
 
 async def download(
@@ -71,7 +75,8 @@ async def worker(idx: int, url: str, session: aiohttp.ClientSession):
     metadata = await download_generator.asend(None)
 
     if metadata["status"] < 400:
-        return
+        raise KetterHTTPError(
+            f"Response status {metadata['status']}, {HTTP_CODES[metadata['status']]}")
 
     bar = progress_bar(
         file_name=file_name,
