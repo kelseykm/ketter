@@ -1,3 +1,6 @@
+"""errors provides custom errors"""
+
+
 class KetterHTTPError(Exception):
     ...
 
