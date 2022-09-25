@@ -2,12 +2,13 @@ import aiofiles
 import aiohttp
 import argparse
 import asyncio
+import functools
 import os
 import tqdm
 import typing
 import urllib.parse
 from .utils import *
-from .errors import KetterHTTPError
+from .errors import *
 from . import __version__ as VERSION, USER_AGENT
 
 
@@ -106,26 +107,25 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument("-v", "--version", action="version",
                         version=f"{info_banner()} %(prog)s {VERSION}")
     parser.add_argument("--header", action="append",
-                        metavar="key=value", help="""custom header to include in
-                        all requests. Should be of the form key=value. More
-                        than one may be specified. May also be used to
-                        overwrite automatically generated headers such as the
-                        user-agent. If you would like to remove header
-                        completely from requests, pass in the header key
-                        without the value, i.e. key=""")
-    parser.add_argument(
-        "URL_FILE",  help="""text file with urls to be downloaded, separated by
-        newlines. The urls should be written in full, including the url
-        scheme""")
+                        metavar="key=value", help="""custom header to include
+                        in all requests. More than one may be specified. May
+                        also be used to overwrite automatically generated
+                        headers such as the 'User-Agent' header""")
+    parser.add_argument("URL_FILE",  help="""text file with urls to be
+                        downloaded, separated by newlines. The urls should be
+                        written in full, including the url scheme""")
 
     return parser
 
 
-def valid_url_file(url_file: str) -> bool:
-    if os.path.exists(url_file) and os.path.isfile(url_file):
-        return True
+def validate_url_file(url_file: str):
+    if not os.path.exists(url_file):
+        raise KetterInvalidFileError(
+            f"Url file does not exist: {format_user_submitted(url_file)}")
 
-    return False
+    elif not os.path.isfile(url_file):
+        raise KetterInvalidFileError(
+            f"Url file not regular file: {format_user_submitted(url_file)}")
 
 
 def harvest_urls(url_file: str) -> list[str]:
@@ -133,25 +133,40 @@ def harvest_urls(url_file: str) -> list[str]:
         return [url.strip() for url in file.readlines()]
 
 
+def harvest_headers(custom_headers: list[str]) -> dict[str, str]:
+    def reduce_headers(accum_headers, curr_header):
+        key, value = curr_header.split("=")
+        key = key.lower()
+
+        if value == "":
+            raise KetterHTTPHeaderError(
+                f"Invalid header: {format_user_submitted(curr_header)}")
+
+        accum_headers[key] = value
+        return accum_headers
+
+    return functools.reduce(
+        reduce_headers,
+        custom_headers,
+        {}
+    )
+
+
 async def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    if not valid_url_file(args.URL_FILE):
-        print(
-            f"{error_banner()} Invalid URL_FILE: {format_user_submitted(args.URL_FILE)}",
-            end="\n\n"
-        )
-        parser.print_usage()
-        return
-
     try:
+        custom_headers = harvest_headers(args.header or [])
+        validate_url_file(args.URL_FILE)
         urls = harvest_urls(args.URL_FILE)
     except Exception as e:
         print(f"{error_banner()} {e}")
         return
 
-    headers = {"User-Agent": USER_AGENT}
+    headers = {"user-agent": USER_AGENT}
+    headers.update(custom_headers)
+
     timeout = aiohttp.ClientTimeout(total=None)
     async with aiohttp.ClientSession(headers=headers, timeout=timeout) as session:
         workers = []
