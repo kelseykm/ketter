@@ -134,7 +134,10 @@ def harvest_urls(url_file: str) -> list[str]:
 
 
 def harvest_headers(custom_headers: list[str]) -> dict[str, str]:
-    def reduce_headers(accum_headers, curr_header):
+    def reduce_headers(
+            accum_headers: dict[str, str],
+            curr_header: str
+    ) -> dict[str, str]:
         key, value = curr_header.split("=", maxsplit=1)
         key = key.lower()
 
@@ -167,7 +170,10 @@ async def main():
     headers = {"user-agent": USER_AGENT}
     headers.update(custom_headers)
 
-    def reduce_headers_capitalise(accum_headers, curr_header_key):
+    def reduce_headers_capitalise(
+            accum_headers: dict[str, str],
+            curr_header_key: str
+    ) -> dict[str, str]:
         accum_headers[capitalise(curr_header_key)] = headers[curr_header_key]
         return accum_headers
 
