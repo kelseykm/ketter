@@ -8,7 +8,7 @@ import typing
 import urllib.parse
 from .utils import *
 from .errors import KetterHTTPError
-from . import __version__ as VERSION
+from . import __version__ as VERSION, USER_AGENT
 
 
 async def download(
@@ -63,7 +63,7 @@ async def worker(idx: int, url: str, session: aiohttp.ClientSession):
     if file_name == "":
         file_name = f"file_{idx+1}"
 
-    headers = {}
+    headers = {"User-Agent": USER_AGENT}
     resume_download = True if os.path.exists(file_name) else False
     if resume_download:
         file_size = os.stat(file_name).st_size
