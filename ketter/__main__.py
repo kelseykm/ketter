@@ -82,12 +82,19 @@ async def worker(idx: int, url: str, session: aiohttp.ClientSession):
         raise KetterHTTPError(
             f"Response status {metadata['status']}, {HTTP_CODES[metadata['status']]}")
 
-    bar = progress_bar(
-        file_name=file_name,
-        total=metadata["content_length"]
-    )
+    really_resume_download = resume_download and metadata["status"] == 206
 
-    async with aiofiles.open(file_name, "ab") as file:
+    total = metadata["content_length"]
+    if really_resume_download:
+        total += file_size
+
+    bar = progress_bar(file_name=file_name, total=total)
+
+    if really_resume_download:
+        bar.update(file_size)
+
+    open_mode = "ab" if really_resume_download else "wb"
+    async with aiofiles.open(file_name, open_mode) as file:
         async for data in download_generator:
             await file.write(data)
             bar.update(len(data))
