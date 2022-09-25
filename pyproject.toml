@@ -13,3 +13,6 @@ dependencies = [
   "aiohttp",
   "tqdm",
 ]
+
+[project.scripts]
+cli-name = "ketter.__main__:main"
