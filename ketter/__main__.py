@@ -31,6 +31,11 @@ async def main() -> int:
     return retval
 
 
+def cli():
+    print_ketter_banner()
+    sys.exit(asyncio.run(main()))
+
+
 if __name__ == "__main__":
     print_ketter_banner()
     sys.exit(asyncio.run(main()))
