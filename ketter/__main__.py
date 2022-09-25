@@ -63,7 +63,7 @@ async def worker(idx: int, url: str, session: aiohttp.ClientSession):
     if file_name == "":
         file_name = f"file_{idx+1}"
 
-    headers = {"User-Agent": USER_AGENT}
+    headers = {}
     resume_download = True if os.path.exists(file_name) else False
     if resume_download:
         file_size = os.stat(file_name).st_size
@@ -143,8 +143,9 @@ async def main():
         print(f"{error_banner()} {e}")
         return
 
+    headers = {"User-Agent": USER_AGENT}
     timeout = aiohttp.ClientTimeout(total=None)
-    async with aiohttp.ClientSession(timeout=timeout) as session:
+    async with aiohttp.ClientSession(headers=headers, timeout=timeout) as session:
         workers = []
 
         for idx, url in enumerate(urls):
