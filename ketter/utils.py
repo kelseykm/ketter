@@ -1,12 +1,6 @@
 """utils contains convenient helper functions and variables"""
 
-from .colour import (
-    BLUE_BACKGROUND,
-    BOLD,
-    NORMAL,
-    RED_BACKGROUND,
-    YELLOW,
-)
+from .colour import *
 
 HTTP_CODES = {
     100: 'Continue', 101: 'Switching Protocols', 102: 'Processing',
@@ -61,3 +55,6 @@ def print_ketter_banner():
               32, 32, 32, 47, 95, 47, 10]
 
     print(f"{YELLOW}{BOLD}{bytes(banner).decode('utf-8')}{NORMAL}")
+
+def format_user_submitted(user_str: str) -> str:
+    return f"{UNDERLINE}{CYAN}{user_str}{NORMAL}"
