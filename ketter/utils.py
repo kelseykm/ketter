@@ -56,5 +56,12 @@ def print_ketter_banner():
 
     print(f"{YELLOW}{BOLD}{bytes(banner).decode('utf-8')}{NORMAL}")
 
+
 def format_user_submitted(user_str: str) -> str:
     return f"{UNDERLINE}{CYAN}{user_str}{NORMAL}"
+
+
+def capitalise(string: str) -> str:
+    pieces = string.split("-")
+    capped_pieces = map(lambda piece: piece[0].upper() + piece[1:], pieces)
+    return "-".join(capped_pieces)
