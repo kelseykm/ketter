@@ -98,8 +98,8 @@ async def main():
 
         for idx, result in enumerate(results):
             if result is not None:
-                print(f"{error_banner()} {ITALIC}{url}{NORMAL}: " +
-                      f"{RED}{result}{NORMAL}")
+                print(
+                    f"{error_banner()} {ITALIC}{url}{NORMAL}: {RED}{result}{NORMAL}")
 
 
 if __name__ == "__main__":
