@@ -1,12 +1,15 @@
 import aiohttp
 import asyncio
+import sys
 from .utils import *
 from .arguments import main as arguments_main
 from .downloader import worker
 
 
-async def main():
+async def main() -> int:
     """sets up everything"""
+
+    retval = 0
 
     headers, urls = arguments_main()
 
@@ -21,10 +24,13 @@ async def main():
 
         for idx, result in enumerate(results):
             if isinstance(result, Exception):
+                retval += 1
                 print(
                     f"{error_banner()} {format_user_submitted(urls[idx])}: {result}")
+
+    return retval
 
 
 if __name__ == "__main__":
     print_ketter_banner()
-    asyncio.run(main())
+    sys.exit(asyncio.run(main()))
