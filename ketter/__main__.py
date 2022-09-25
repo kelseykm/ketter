@@ -167,6 +167,12 @@ async def main():
     headers = {"user-agent": USER_AGENT}
     headers.update(custom_headers)
 
+    def reduce_headers_capitalise(accum_headers, curr_header_key):
+        accum_headers[capitalise(curr_header_key)] = headers[curr_header_key]
+        return accum_headers
+
+    headers = functools.reduce(reduce_headers_capitalise, headers, {})
+
     timeout = aiohttp.ClientTimeout(total=None)
     async with aiohttp.ClientSession(headers=headers, timeout=timeout) as session:
         workers = []
