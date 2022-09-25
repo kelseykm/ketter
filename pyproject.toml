@@ -18,4 +18,4 @@ dependencies = [
 packages = ["ketter"]
 
 [project.scripts]
-ketter = "ketter.__main__:main"
+ketter = "ketter.__main__:cli"
