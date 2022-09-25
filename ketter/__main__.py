@@ -148,7 +148,7 @@ async def main():
         for idx, result in enumerate(results):
             if result is not None:
                 print(
-                    f"{error_banner()} {format_user_submitted(url)}: {repr(result)}")
+                    f"{error_banner()} {format_user_submitted(urls[idx])}: {repr(result)}")
 
 
 if __name__ == "__main__":
