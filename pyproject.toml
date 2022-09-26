@@ -14,5 +14,8 @@ dependencies = [
   "tqdm",
 ]
 
+[tool.setuptools]
+packages = ["ketter"]
+
 [project.scripts]
 ketter = "ketter.__main__:cli"
