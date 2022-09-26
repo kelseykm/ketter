@@ -1,6 +1,6 @@
 # ketter
 
-![ketter](./assets/banner.png)
+![ketter](https://raw.githubusercontent.com/kelseykm/banners/main/ketter/banner.png)
 
 Ketter is an asynchronous http downloader written in [Python](https://python.org)
 
