@@ -19,3 +19,7 @@ dependencies = [
 
 [project.scripts]
 ketter = "ketter.__main__:cli"
+
+[project.urls]
+repository = "https://github.com/kelseykm/ketter"
+changelog = "https://github.com/kelseykm/ketter/blob/main/CHANGELOG.md"
