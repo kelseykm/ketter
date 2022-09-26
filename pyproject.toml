@@ -7,6 +7,7 @@ name = "ketter"
 version = "1.0.1"
 description = "Asynchronous HTTP downloader"
 readme = "README.md"
+keywords = ["downloader", "asynchronous-downloader"]
 authors = [
   {name = "Kelsey Mwongeli", email = "kelseykm.git@gmail.com"},
 ]
