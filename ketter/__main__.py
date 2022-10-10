@@ -37,5 +37,4 @@ def cli():
 
 
 if __name__ == "__main__":
-    print_ketter_banner()
-    sys.exit(asyncio.run(main()))
+    cli()
