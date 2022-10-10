@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.2] - 2022-10-10
+
+- Loop over custom headers only once (`ketter.arguments`)
+- Don't repeat code already in cli function (`ketter.__main__`)
+
 ## [1.0.1] - 2022-09-26
 
 - Include description and readme in pyproject.toml
