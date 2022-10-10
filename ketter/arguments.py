@@ -62,13 +62,13 @@ def harvest_headers(custom_headers: list[str]) -> dict[str, str]:
             raise KetterHTTPHeaderError(
                 f"Invalid header: {format_user_submitted(curr_header)}")
 
-        accum_headers[key] = value
+        accum_headers[capitalise(key)] = value
         return accum_headers
 
     return functools.reduce(
         reduce_headers,
         custom_headers,
-        {}
+        {"User-Agent": f"ketter/{VERSION}"}
     )
 
 
@@ -79,22 +79,10 @@ def main() -> tuple[dict[str, str], list[str]]:
     args = parser.parse_args()
 
     try:
-        custom_headers = harvest_headers(args.header or [])
+        headers = harvest_headers(args.header or [])
         validate_url_file(args.URL_FILE)
         urls = harvest_urls(args.URL_FILE)
     except Exception as e:
         parser.exit(2, f"{error_banner()} {e}")
-
-    headers = {"user-agent": f"ketter/{VERSION}"}
-    headers.update(custom_headers)
-
-    def reduce_headers_capitalise(
-            accum_headers: dict[str, str],
-            curr_header_key: str
-    ) -> dict[str, str]:
-        accum_headers[capitalise(curr_header_key)] = headers[curr_header_key]
-        return accum_headers
-
-    headers = functools.reduce(reduce_headers_capitalise, headers, {})
 
     return headers, urls
