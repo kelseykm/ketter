@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ketter"
-version = "1.0.1"
+version = "1.0.2"
 description = "Asynchronous HTTP downloader"
 readme = "README.md"
 keywords = ["downloader", "asynchronous-downloader"]
