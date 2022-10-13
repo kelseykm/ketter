@@ -15,17 +15,17 @@ def create_parser() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(
         description="Asynchronous HTTP downloader", prog="ketter")
-    parser.add_argument("-v", "--version", action="version",
-                        version=f"{info_banner()} %(prog)s {VERSION}")
     parser.add_argument("--agent", type=str, help="""custom user agent to use
                         in all requests. Automatically generated if not
                         given""")
-    parser.add_argument("--header", action="append", metavar="key=value",
-                        help="""custom header to include in all requests. This
-                        option may be used multiple times""")
     parser.add_argument("--cookie", action="append", metavar="key=value",
                         help="""cookie to send in all requests. This option may
                         be used multiple times""")
+    parser.add_argument("--header", action="append", metavar="key=value",
+                        help="""custom header to include in all requests. This
+                        option may be used multiple times""")
+    parser.add_argument("-v", "--version", action="version",
+                        version=f"{info_banner()} %(prog)s {VERSION}")
     parser.add_argument("URL_FILE",  help="""text file with urls to be
                         downloaded, separated by newlines. The urls should be
                         written in full, including the url scheme""")
