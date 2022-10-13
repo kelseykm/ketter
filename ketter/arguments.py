@@ -17,11 +17,12 @@ def create_parser() -> argparse.ArgumentParser:
         description="Asynchronous HTTP downloader", prog="ketter")
     parser.add_argument("-v", "--version", action="version",
                         version=f"{info_banner()} %(prog)s {VERSION}")
+    parser.add_argument("--agent", type=str, help="""custom user agent to use
+                        in all requests. Automatically generated if not
+                        given""")
     parser.add_argument("--header", action="append", metavar="key=value",
-                        help="""custom header to include in all requests. May
-                        also be used to overwrite automatically generated
-                        headers such as the 'User-Agent' header". This option
-                        may be used multiple times""")
+                        help="""custom header to include in all requests. This
+                        option may be used multiple times""")
     parser.add_argument("--cookie", action="append", metavar="key=value",
                         help="""cookie to send in all requests. This option may
                         be used multiple times""")
@@ -76,7 +77,7 @@ def harvest_headers(custom_headers: list[str]) -> dict[str, str]:
     return functools.reduce(
         reduce_headers,
         custom_headers,
-        {"User-Agent": f"ketter/{VERSION}"}
+        {}
     )
 
 
@@ -117,5 +118,10 @@ def main() -> tuple[dict[str, str], list[str]]:
         urls = harvest_urls(args.URL_FILE)
     except Exception as e:
         parser.exit(2, f"{error_banner()} {e}")
+
+    if args.agent is None:
+        headers.update({"User-Agent": f"ketter/{VERSION}"})
+    else:
+        headers.update({"User-Agent": args.agent})
 
     return headers, cookies, urls
