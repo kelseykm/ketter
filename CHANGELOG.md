@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.0] - 2022-10-13
+
+- Add cookie and user agent cli options
+
 ## [1.0.2] - 2022-10-10
 
 - Loop over custom headers only once (`ketter.arguments`)
