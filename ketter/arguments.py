@@ -55,14 +55,19 @@ def harvest_headers(custom_headers: list[str]) -> dict[str, str]:
             accum_headers: dict[str, str],
             curr_header: str
     ) -> dict[str, str]:
-        key, value = curr_header.split("=", maxsplit=1)
-        key = key.lower()
+        try:
+            key, value = curr_header.split("=", maxsplit=1)
+            key = key.lower()
+        except:
+            raise KetterHTTPHeaderError(
+                f"Invalid header: {format_user_submitted(curr_header)}")
 
         if value == "":
             raise KetterHTTPHeaderError(
                 f"Invalid header: {format_user_submitted(curr_header)}")
 
         accum_headers[capitalise(key)] = value
+
         return accum_headers
 
     return functools.reduce(
