@@ -17,3 +17,9 @@ class KetterInvalidFileError(Exception):
     """for errors relating to url file"""
 
     ...
+
+
+class KetterCookieError(Exception):
+    """for errors relating to custom cookies"""
+
+    ...

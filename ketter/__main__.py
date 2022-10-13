@@ -11,10 +11,14 @@ async def main() -> int:
 
     retval = 0
 
-    headers, urls = arguments_main()
+    headers, cookies, urls = arguments_main()
 
     timeout = aiohttp.ClientTimeout(total=None)
-    async with aiohttp.ClientSession(headers=headers, timeout=timeout) as session:
+    async with aiohttp.ClientSession(
+        headers=headers,
+        cookies=cookies,
+        timeout=timeout
+    ) as session:
         workers = []
 
         for idx, url in enumerate(urls):

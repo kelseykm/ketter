@@ -17,11 +17,14 @@ def create_parser() -> argparse.ArgumentParser:
         description="Asynchronous HTTP downloader", prog="ketter")
     parser.add_argument("-v", "--version", action="version",
                         version=f"{info_banner()} %(prog)s {VERSION}")
-    parser.add_argument("--header", action="append",
-                        metavar="key=value", help="""custom header to include
-                        in all requests. More than one may be specified. May
+    parser.add_argument("--header", action="append", metavar="key=value",
+                        help="""custom header to include in all requests. May
                         also be used to overwrite automatically generated
-                        headers such as the 'User-Agent' header""")
+                        headers such as the 'User-Agent' header". This option
+                        may be used multiple times""")
+    parser.add_argument("--cookie", action="append", metavar="key=value",
+                        help="""cookie to send in all requests. This option may
+                        be used multiple times""")
     parser.add_argument("URL_FILE",  help="""text file with urls to be
                         downloaded, separated by newlines. The urls should be
                         written in full, including the url scheme""")
@@ -77,6 +80,30 @@ def harvest_headers(custom_headers: list[str]) -> dict[str, str]:
     )
 
 
+def harvest_cookies(custom_cookies: list[str]) -> dict[str, str]:
+    """validates and formats passed cookies for ready use"""
+
+    def reduce_cookies(
+            accum_cookies: dict[str, str],
+            curr_cookie: str
+    ) -> dict[str, str]:
+        try:
+            key, value = curr_cookie.split("=", maxsplit=1)
+        except:
+            raise KetterCookieError(
+                f"Invalid cookie: {format_user_submitted(curr_cookie)}")
+
+        if value == "":
+            raise KetterCookieError(
+                f"Invalid cookie: {format_user_submitted(curr_cookie)}")
+
+        accum_cookies[key] = value
+
+        return accum_cookies
+
+    return functools.reduce(reduce_cookies, custom_cookies, {})
+
+
 def main() -> tuple[dict[str, str], list[str]]:
     """returns all commandline arguments ready for use"""
 
@@ -85,9 +112,10 @@ def main() -> tuple[dict[str, str], list[str]]:
 
     try:
         headers = harvest_headers(args.header or [])
+        cookies = harvest_cookies(args.cookie or [])
         validate_url_file(args.URL_FILE)
         urls = harvest_urls(args.URL_FILE)
     except Exception as e:
         parser.exit(2, f"{error_banner()} {e}")
 
-    return headers, urls
+    return headers, cookies, urls
