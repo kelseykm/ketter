@@ -7,7 +7,7 @@ Ketter is an asynchronous http downloader written in [Python](https://python.org
 ## Features
 
 - Download many files concurrently
-- Set custom HTTP headers to be used in download requests
+- Set custom HTTP headers and cookies to be used in download requests
 - Resume incomplete downloads at later sessions automatically
 - Beautiful progress bars that provide feedback on the ongoing download
 
