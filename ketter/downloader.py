@@ -6,7 +6,7 @@ a progress bar
 import aiofiles
 import aiohttp
 import os
-import tqdm
+import tqdm.asyncio
 import typing
 import urllib.parse
 from .utils import *
@@ -40,7 +40,7 @@ async def download(
             yield data
 
 
-def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.std.tqdm:
+def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.asyncio.tqdm:
     """returns tqdm progress bar ready for use"""
 
     desc = f"{info_banner()} Downloading: {format_user_submitted(file_name)}"
@@ -51,7 +51,7 @@ def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.std.tqdm:
             "\033[1;32m{elapsed}\033[0m " + \
             "\033[7;37m{rate_fmt}\033[0m"
 
-        return tqdm.tqdm(
+        return tqdm.asyncio.tqdm(
             unit="B",
             unit_scale=True,
             desc=desc,
@@ -61,7 +61,7 @@ def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.std.tqdm:
 
     bar_format = "{desc} \033[1;32m{elapsed}\033[0m \033[7;37m{rate_fmt}\033[0m"
 
-    return tqdm.tqdm(
+    return tqdm.asyncio.tqdm(
         unit="B",
         unit_scale=True,
         desc=desc,
