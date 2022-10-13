@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.0] - 2022-10-13
+
+- Use asynchronous friendly version of `tqdm`
+- Resize progress bars dynamically in response to screen size changes
+
 ## [1.1.0] - 2022-10-13
 
 - Add cookie and user agent cli options
