@@ -56,7 +56,8 @@ def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.asyncio.tq
             unit_scale=True,
             desc=desc,
             total=total,
-            bar_format=bar_format
+            bar_format=bar_format,
+            dynamic_ncols=True
         )
 
     bar_format = "{desc} \033[1;32m{elapsed}\033[0m \033[7;37m{rate_fmt}\033[0m"
@@ -65,7 +66,8 @@ def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.asyncio.tq
         unit="B",
         unit_scale=True,
         desc=desc,
-        bar_format=bar_format
+        bar_format=bar_format,
+        dynamic_ncols=True
     )
 
 
