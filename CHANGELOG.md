@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.0] - 2022-10-18
+
+- Add option to control maximum number of concurrent downloads
+
 ## [1.2.0] - 2022-10-13
 
 - Use asynchronous friendly version of `tqdm`
