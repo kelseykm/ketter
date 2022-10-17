@@ -5,6 +5,7 @@ a progress bar
 
 import aiofiles
 import aiohttp
+import asyncio
 import os
 import tqdm.asyncio
 import typing
@@ -71,8 +72,16 @@ def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.asyncio.tq
     )
 
 
-async def worker(idx: int, url: str, session: aiohttp.ClientSession):
+async def worker(
+        idx: int,
+        url: str,
+        session: aiohttp.ClientSession,
+        sem: typing.Optional[asyncio.Semaphore]
+):
     """handles downloading, writing to disc and updating progress bar"""
+
+    if sem is not None:
+        await sem.acquire()
 
     _CHUNK_SIZE = 60*1024
 
@@ -123,3 +132,6 @@ async def worker(idx: int, url: str, session: aiohttp.ClientSession):
         async for data in download_generator:
             await file.write(data)
             bar.update(len(data))
+
+    if sem is not None:
+        sem.release()

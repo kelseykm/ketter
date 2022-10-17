@@ -24,6 +24,10 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument("--header", action="append", metavar="key=value",
                         help="""custom header to include in all requests. This
                         option may be used multiple times""")
+    parser.add_argument("--max_downloads", type=int, help="""maximum number of
+                        concurrent downloads. If not set, no maximum will be
+                        imposed; all urls passed will be downloaded
+                        simultaneously""")
     parser.add_argument("-v", "--version", action="version",
                         version=f"{info_banner()} %(prog)s {VERSION}")
     parser.add_argument("URL_FILE",  help="""text file with urls to be
@@ -124,4 +128,4 @@ def main() -> tuple[dict[str, str], list[str]]:
     else:
         headers.update({"User-Agent": args.agent})
 
-    return headers, cookies, urls
+    return headers, cookies, urls, args.max_downloads

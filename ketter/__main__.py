@@ -11,7 +11,9 @@ async def main() -> int:
 
     retval = 0
 
-    headers, cookies, urls = arguments_main()
+    headers, cookies, urls, max_downloads = arguments_main()
+
+    sem = asyncio.Semaphore(max_downloads) if max_downloads is not None else None
 
     timeout = aiohttp.ClientTimeout(total=None)
     async with aiohttp.ClientSession(
@@ -22,7 +24,7 @@ async def main() -> int:
         workers = []
 
         for idx, url in enumerate(urls):
-            workers.append(worker(idx, url, session))
+            workers.append(worker(idx, url, session, sem))
 
         results = await asyncio.gather(*workers, return_exceptions=True)
 
