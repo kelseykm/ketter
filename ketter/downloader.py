@@ -8,6 +8,7 @@ import aiohttp
 import asyncio
 import os
 import tqdm.asyncio
+import typing
 import urllib.parse
 from .utils import *
 from .errors import *
@@ -75,62 +76,58 @@ async def worker(
         idx: int,
         url: str,
         session: aiohttp.ClientSession,
-        sem: asyncio.Semaphore | None
+        sem: asyncio.Semaphore | typing.AsyncContextManager
 ):
     """handles downloading, writing to disc and updating progress bar"""
 
-    if sem is not None:
-        await sem.acquire()
+    async with sem:
 
-    _CHUNK_SIZE = 60*1024
+        _CHUNK_SIZE = 60*1024
 
-    parsed_url = urllib.parse.urlparse(url)
-    file_name = parsed_url.path.split("/")[-1]
-    file_name = urllib.parse.unquote(file_name)
+        parsed_url = urllib.parse.urlparse(url)
+        file_name = parsed_url.path.split("/")[-1]
+        file_name = urllib.parse.unquote(file_name)
 
-    if file_name == "":
-        file_name = f"file_{idx+1}"
+        if file_name == "":
+            file_name = f"file_{idx+1}"
 
-    headers = {}
-    resume_download = True if os.path.exists(file_name) else False
-    if resume_download:
-        file_size = os.stat(file_name).st_size
-        headers["Range"] = f"bytes={file_size}-"
+        headers = {}
+        resume_download = True if os.path.exists(file_name) else False
+        if resume_download:
+            file_size = os.stat(file_name).st_size
+            headers["Range"] = f"bytes={file_size}-"
 
-    download_generator = download(
-        url=url,
-        headers=headers,
-        session=session,
-        chunk_size=_CHUNK_SIZE
-    )
+        download_generator = download(
+            url=url,
+            headers=headers,
+            session=session,
+            chunk_size=_CHUNK_SIZE
+        )
 
-    metadata = await download_generator.asend(None)
+        metadata = await download_generator.asend(None)
 
-    if metadata["status"] == 416:
-        bar = progress_bar(file_name=file_name, total=file_size)
-        bar.update(file_size)
-        return
+        if metadata["status"] == 416:
+            bar = progress_bar(file_name=file_name, total=file_size)
+            bar.update(file_size)
+            return
 
-    elif metadata["status"] >= 400:
-        raise KetterHTTPError(
-            f"Response status {metadata['status']}, {HTTP_CODES[metadata['status']]}")
+        elif metadata["status"] >= 400:
+            raise KetterHTTPError(f"Response status {metadata['status']}," +
+                                  f"{HTTP_CODES[metadata['status']]}")
 
-    really_resume_download = resume_download and metadata["status"] == 206
+        really_resume_download = resume_download and metadata["status"] == 206
 
-    total = metadata["content_length"]
-    if really_resume_download:
-        total += file_size
+        total = metadata["content_length"]
+        if really_resume_download:
+            total += file_size
 
-    bar = progress_bar(file_name=file_name, total=total)
+        bar = progress_bar(file_name=file_name, total=total)
 
-    if really_resume_download:
-        bar.update(file_size)
+        if really_resume_download:
+            bar.update(file_size)
 
-    open_mode = "ab" if really_resume_download else "wb"
-    async with aiofiles.open(file_name, open_mode) as file:
-        async for data in download_generator:
-            await file.write(data)
-            bar.update(len(data))
-
-    if sem is not None:
-        sem.release()
+        open_mode = "ab" if really_resume_download else "wb"
+        async with aiofiles.open(file_name, open_mode) as file:
+            async for data in download_generator:
+                await file.write(data)
+                bar.update(len(data))
