@@ -8,7 +8,6 @@ import aiohttp
 import asyncio
 import os
 import tqdm.asyncio
-import typing
 import urllib.parse
 from .utils import *
 from .errors import *
@@ -19,7 +18,7 @@ async def download(
         headers: dict[str, str],
         session: aiohttp.ClientSession,
         chunk_size: int,
-) -> typing.Union[dict[str, typing.Union[str, int]], bytes]:
+) -> dict[str, str | int] | bytes:
     """
     performs http get request for given url and returns metadata and chunked
     data
@@ -41,7 +40,7 @@ async def download(
             yield data
 
 
-def progress_bar(file_name: str, total: typing.Optional[int]) -> tqdm.asyncio.tqdm:
+def progress_bar(file_name: str, total: int | None) -> tqdm.asyncio.tqdm:
     """returns tqdm progress bar ready for use"""
 
     desc = f"{info_banner()} Downloading: {format_user_submitted(file_name)}"
@@ -76,7 +75,7 @@ async def worker(
         idx: int,
         url: str,
         session: aiohttp.ClientSession,
-        sem: typing.Optional[asyncio.Semaphore]
+        sem: asyncio.Semaphore | None
 ):
     """handles downloading, writing to disc and updating progress bar"""
 
