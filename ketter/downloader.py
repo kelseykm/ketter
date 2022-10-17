@@ -112,7 +112,7 @@ async def worker(
             return
 
         elif metadata["status"] >= 400:
-            raise KetterHTTPError(f"Response status {metadata['status']}," +
+            raise KetterHTTPError(f"Response status {metadata['status']}, " +
                                   f"{HTTP_CODES[metadata['status']]}")
 
         really_resume_download = resume_download and metadata["status"] == 206
