@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.1] - 2022-10-18
+
+- Fix bug where semaphore was not being released when exceptions or early
+  returns occured
+
 ## [1.3.0] - 2022-10-18
 
 - Add option to control maximum number of concurrent downloads
