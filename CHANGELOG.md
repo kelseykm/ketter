@@ -3,6 +3,7 @@
 ## [1.3.0] - 2022-10-18
 
 - Add option to control maximum number of concurrent downloads
+- Refactor to use Python 3.10 typing syntax
 
 ## [1.2.0] - 2022-10-13
 
