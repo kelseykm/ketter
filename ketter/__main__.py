@@ -7,11 +7,6 @@ from .arguments import main as arguments_main
 from .downloader import worker
 
 
-@contextlib.asynccontextmanager
-async def Limitless():
-    yield None
-
-
 async def main() -> int:
     """executes the program"""
 
@@ -22,7 +17,7 @@ async def main() -> int:
     if max_downloads is not None:
         sem = asyncio.Semaphore(max_downloads)
     else:
-        sem = Limitless()
+        sem = contextlib.nullcontext()
 
     timeout = aiohttp.ClientTimeout(total=None)
     async with aiohttp.ClientSession(
