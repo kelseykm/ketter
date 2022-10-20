@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.2] - 2022-10-20
+
+- Use `contextlib.nullcontext` for dummy context manager instead of the buggy
+  `Limitless`
+
 ## [1.3.1] - 2022-10-18
 
 - Fix bug where semaphore was not being released when exceptions or early
