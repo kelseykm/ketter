@@ -6,9 +6,9 @@ a progress bar
 import aiofiles
 import aiohttp
 import asyncio
+import contextlib
 import os
 import tqdm.asyncio
-import typing
 import urllib.parse
 from .utils import *
 from .errors import *
@@ -76,7 +76,7 @@ async def worker(
         idx: int,
         url: str,
         session: aiohttp.ClientSession,
-        sem: asyncio.Semaphore | typing.AsyncContextManager
+        sem: asyncio.Semaphore | contextlib.nullcontext
 ):
     """handles downloading, writing to disc and updating progress bar"""
 
