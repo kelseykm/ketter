@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.3] - 2022-11-06
+
+- Fix alternative type for `sem`
+
 ## [1.3.2] - 2022-10-20
 
 - Use `contextlib.nullcontext` for dummy context manager instead of the buggy
